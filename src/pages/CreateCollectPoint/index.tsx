@@ -39,7 +39,7 @@ const CreateCollectPoint = () => {
     const [loadingForm, setLoadingForm] = useState<boolean>(false);
     const [formData, setFormaData] = useState({
         name: '',
-        celular: '',
+        telephone: '',
         email: '',
         numero: 0,
         rua: '',
@@ -165,11 +165,11 @@ const CreateCollectPoint = () => {
         
         setLoadingForm(true);
 
-        const {name, email, rua, bairro, numero} = formData;
+        const {name, email, rua, bairro, numero, telephone} = formData;
         const [latitude, longitude] = selectedPosition;
 
         console.log(formData, estado, city)
-        console.log(latitude, longitude, selectedCollectItem);
+        console.log(latitude, longitude, selectedCollectItem, telephone);
 
         if (!selectedCollectItem.length) {
             alert('Pelo menos um item de coleta deve ser selecionado');
@@ -188,6 +188,7 @@ const CreateCollectPoint = () => {
             addressNumber: numero,
             latitude,
             longitude,
+            telephone,
             items: selectedCollectItem,
         }
 
@@ -245,12 +246,14 @@ const CreateCollectPoint = () => {
                         </div>
 
                        <div className="field">
-                        <label htmlFor="name">Celular*</label>
+                        <label htmlFor="telephone">Celular*</label>
                             <input 
-                                type="text"
-                                name="celular"
-                                id="celular"
+                                type="number"
+                                name="telephone"
+                                id="telephone"
                                 required
+                                min="10"
+                                max="11"
                                 onChange={handleInputChange}
                             />
 
