@@ -2,11 +2,14 @@ import React, {useState, useEffect, ChangeEvent} from 'react';
 import './styles.css';
 import { FiArrowLeft } from 'react-icons/fi';
 import logo from '../../assets/logo.svg';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';
 import api from '../../services/api';
 import axios from 'axios';
+import FileDropzone from '../../components/dropzone';
+
+
 interface CollectItem {
     id: number;
     title: string;
@@ -33,6 +36,7 @@ const CreateCollectPoint = () => {
     const [city, setCity] = useState<string>('');
     const [estados, setEstados] = useState<Estado[]>([]);
     const [estado, setEstado] = useState<string>('');
+    const [selectedFile, setSelectedFile] = useState<File>();
     const [citys, setCitys] = useState<[]>([]);
     const [selectedCollectItem, setSelectedCollectItem] = useState<number[]>([]);
     const [loadingCity, setLoadingCity] = useState<boolean>(false);
@@ -40,13 +44,16 @@ const CreateCollectPoint = () => {
     const [formData, setFormaData] = useState({
         name: '',
         telephone: '',
+        cellphone: '',
         email: '',
         numero: 0,
         rua: '',
         bairro: '',
         "zip-code": '',
 
-    })
+    });
+
+    const history = useHistory();
 
     useEffect(() => 
     {
@@ -161,11 +168,15 @@ const CreateCollectPoint = () => {
     }
 
     const handleSubmit = (event: any) => {
+
         event.preventDefault();
-        
         setLoadingForm(true);
 
-        const {name, email, rua, bairro, numero, telephone} = formData;
+
+        const data = new FormData();
+ 
+
+        const {name, email, rua, bairro, numero, telephone, cellphone} = formData;
         const [latitude, longitude] = selectedPosition;
 
         console.log(formData, estado, city)
@@ -177,27 +188,32 @@ const CreateCollectPoint = () => {
             return;
         }
 
-        const data = {
-             name,
-            email,
-            UF: estado,
-            city,
-            neighborhood: bairro,
-            street: rua,
-            "zip_code": formData['zip-code'],
-            addressNumber: numero,
-            latitude,
-            longitude,
-            telephone,
-            items: selectedCollectItem,
+    
+        data.append('name',name);
+        data.append('email',email);
+        data.append('UF', estado);
+        data.append('city', city);
+        data.append('neighborhood', bairro);
+        data.append('street', rua);
+        data.append('zip_code', formData['zip-code']);
+        data.append('addressNumber', String(numero));
+        data.append('latitude', String(latitude));
+        data.append('longitude', String(longitude));
+        data.append('telephone', telephone);
+        data.append('cellphone', cellphone);
+        data.append('items', selectedCollectItem.join(','));
+
+        if (selectedFile) {
+            data.append('image', selectedFile);
         }
+        
 
         api.post('collect_points', data)
         .then((response) => 
         {   console.log(response)
             if (response.status === 200) {
                 alert('Ponto de coleta cadastrado com sucesso!');
-                window.location.assign('/');
+                history.push('/');
             }
             setLoadingForm(false);  
         })
@@ -218,6 +234,8 @@ const CreateCollectPoint = () => {
             </header>
             <form method="post" onSubmit={handleSubmit}>
                 <h1>Cadastro do <br /> ponto de coleta</h1>
+
+                <FileDropzone FileDropzone={setSelectedFile}/>
         
                 <fieldset>
                     <legend> <h2>Dados </h2> </legend>
@@ -232,8 +250,7 @@ const CreateCollectPoint = () => {
                         />
                     </div>
 
-                    <div className="field-group">
-                        <div className="field">
+                    <div className="field">
                             <label htmlFor="email">E-mail*</label>
                             <input 
                                 type="email"
@@ -245,15 +262,28 @@ const CreateCollectPoint = () => {
 
                         </div>
 
+                    <div className="field-group">
+                     
+
                        <div className="field">
-                        <label htmlFor="telephone">Celular*</label>
+                        <label htmlFor="telephone">Telefone*</label>
                             <input 
-                                type="number"
+                                type="text"
                                 name="telephone"
                                 id="telephone"
                                 required
-                                min="10"
-                                max="11"
+                                onChange={handleInputChange}
+                            />
+
+                        </div>
+
+                       <div className="field">
+                        <label htmlFor="cellphone">Celular</label>
+                            <input 
+                                type="text"
+                                name="cellphone"
+                                id="cellphone"
+                                required
                                 onChange={handleInputChange}
                             />
 
@@ -297,6 +327,7 @@ const CreateCollectPoint = () => {
                                     type="text"
                                     name="bairro"
                                     id="bairro"
+                                    required
                                     onChange={handleInputChange}
                                 />
                         </div>
@@ -310,6 +341,7 @@ const CreateCollectPoint = () => {
                                         type="text"
                                         name="rua"
                                         id="rua"
+                                        required
                                         onChange={handleInputChange}
                                     />
                             </div>
@@ -321,6 +353,7 @@ const CreateCollectPoint = () => {
                                     name="numero"
                                     id="numero"
                                     min="0"
+                                    required
                                     onChange={handleInputChange}
                                 />
                         </div>
