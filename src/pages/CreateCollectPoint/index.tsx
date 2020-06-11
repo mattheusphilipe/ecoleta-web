@@ -283,6 +283,7 @@ const CreateCollectPoint = () => {
                                 type="text"
                                 name="cellphone"
                                 id="cellphone"
+                                required
                                 onChange={handleInputChange}
                             />
 
@@ -326,6 +327,7 @@ const CreateCollectPoint = () => {
                                     type="text"
                                     name="bairro"
                                     id="bairro"
+                                    required
                                     onChange={handleInputChange}
                                 />
                         </div>
@@ -339,6 +341,7 @@ const CreateCollectPoint = () => {
                                         type="text"
                                         name="rua"
                                         id="rua"
+                                        required
                                         onChange={handleInputChange}
                                     />
                             </div>
@@ -350,6 +353,7 @@ const CreateCollectPoint = () => {
                                     name="numero"
                                     id="numero"
                                     min="0"
+                                    required
                                     onChange={handleInputChange}
                                 />
                         </div>
