@@ -1,7 +1,7 @@
 import React, {useState, useEffect, ChangeEvent} from 'react';
 import './styles.css';
 import { FiArrowLeft } from 'react-icons/fi';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/logo.png';
 import { Link, useHistory } from 'react-router-dom'
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';

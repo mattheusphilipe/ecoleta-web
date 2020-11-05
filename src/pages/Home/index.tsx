@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/logo.png';
 import { FiLogIn } from 'react-icons/fi';
 import { Link } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ const Home = () => {
          <div id="page-home">
              <div className="content">
                  <header>
-                    <img src={logo} alt="Logo Ecoleta"/> 
+                    <img src={logo} alt="Logo Ecoleta"/>
                  </header>
                 <main>
                     <h1> Seu marketplace de coleta de resíduos.</h1>
