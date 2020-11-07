@@ -142,7 +142,7 @@ const CreateCollectPoint = () => {
         }
 
         setEstado(value);
-    }
+    };
 
     function handleMapClick(event: LeafletMouseEvent) {
         if (!event) {
@@ -158,21 +158,21 @@ const CreateCollectPoint = () => {
         if (cep.length < 8) {
             return;
         }
-            axios.get(`https://viacep.com.br/ws/${cep}/json/`)
-                .then((response) =>
+        axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+            .then((response) =>
+            {
+                if (response.status === 200)
                 {
-                    if (response.status === 200)
-                    {
-                        const { logradouro, bairro, localidade, uf } = response.data;
-                        setFormaData({...formData, bairro, rua: logradouro})
-                        setCity(localidade);
-                        setEstado(uf);
-                    }
-                })
-                .catch(err => {
-                    console.error(err)
-                })
-                .finally(() => setLoadingCity(false));
+                    const { logradouro, bairro, localidade, uf } = response.data;
+                    setFormaData({...formData, bairro, rua: logradouro})
+                    setCity(localidade);
+                    setEstado(uf);
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+            .finally(() => setLoadingCity(false));
     }
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) =>
@@ -190,7 +190,7 @@ const CreateCollectPoint = () => {
 
       setFormaData({...formData, [name]: value})
 
-    }
+    };
 
     const handleSubmit = (event: any) => {
 
@@ -260,7 +260,7 @@ const CreateCollectPoint = () => {
                 <fieldset>
                     <legend> <h2>Dados </h2> </legend>
                     <div className="field">
-                        <label htmlFor="name">Nome da entidade*</label>
+                        <label htmlFor="name">Nome do Local de Coleta*</label>
                         <input
                             type="text"
                             name="name"
@@ -307,6 +307,50 @@ const CreateCollectPoint = () => {
                                 onChange={handleInputChange}
                             />
 
+                        </div>
+                    </div>
+
+                    <div className="field-group">
+                        <div className="field">
+                            <label htmlFor="openDays">Dias de funcionamento*</label>
+                            <select name="openDays" id="openDays" onChange={() => {}} multiple={true} required>
+                                <option value="Segunda-Feira">Segunda-Feira</option>
+                                <option value="Terça-Feira">Terça-Feira</option>
+                                <option value="Quarta-Feira">Quarta-Feira</option>
+                                <option value="Quinta-Feira">Quinta-Feira</option>
+                                <option value="Sexta-Feira">Sexta-Feira</option>
+                                <option value="Sábado-Feira">Sábado-Feira</option>
+                                <option value="Domingo-Feira">Domingo-Feira</option>
+                            </select>
+                        </div>
+
+                       <div className="field">
+                           <label htmlFor="openHours">Horários de funcionamento*</label>
+                           <select name="openHours" id="openHours" onChange={() => {}} multiple={true} required>
+                               {Array.from({length: 12}, (t, index: number) => (<option key={index} value={18-index}>{`${18-index}:00`}</option>))}
+                           </select>
+                        </div>
+
+                        <div className="field">
+                            <label htmlFor="freight">Local de coleta reaiza busca de materiais resíduais?</label>
+                            <div className="field-group"style={{marginTop: '12px'}}>
+                                <div className="field">
+                                    <label htmlFor="sim">Sim</label>
+                                    <input
+                                        type="radio"
+                                        name="freight"
+                                        id="freight"
+                                    />
+                                </div>
+                                <div className="field">
+                                    <label htmlFor="freight">Não</label>
+                                    <input
+                                        type="radio"
+                                        name="freight"
+                                        id="freight"
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </fieldset>
