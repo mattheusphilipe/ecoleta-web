@@ -313,7 +313,7 @@ const CreateCollectPoint = () => {
                     <div className="field-group">
                         <div className="field">
                             <label htmlFor="openDays">Dias de funcionamento*</label>
-                            <select name="openDays" id="openDays" onChange={() => {}} multiple={true} required>
+                            <select name="openDays" id="openDays" onChange={() => {}} multiple required style={{minHeight: '-webkit-fill-available'}}>
                                 <option value="Segunda-Feira">Segunda-Feira</option>
                                 <option value="Terça-Feira">Terça-Feira</option>
                                 <option value="Quarta-Feira">Quarta-Feira</option>
@@ -326,7 +326,7 @@ const CreateCollectPoint = () => {
 
                        <div className="field">
                            <label htmlFor="openHours">Horários de funcionamento*</label>
-                           <select name="openHours" id="openHours" onChange={() => {}} multiple={true} required>
+                           <select name="openHours" id="openHours" onChange={() => {}} multiple required style={{minHeight: '-webkit-fill-available'}}>
                                {Array.from({length: 12}, (t, index: number) => (<option key={index} value={18-index}>{`${18-index}:00`}</option>))}
                            </select>
                         </div>
