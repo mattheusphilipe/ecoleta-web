@@ -332,7 +332,7 @@ const CreateCollectPoint = () => {
                         </div>
 
                         <div className="field">
-                            <label htmlFor="freight">Local de coleta reaiza busca de materiais resíduais?</label>
+                            <label htmlFor="freight">Local de coleta realiza busca de materiais resíduais?</label>
                             <div className="field-group"style={{marginTop: '12px'}}>
                                 <div className="field">
                                     <label htmlFor="sim">Sim</label>
